@@ -28,6 +28,13 @@ flutter:
 
   assets:
     - assets/images/
+    - assets/files/
+
+
+  fonts:
+    - family: Arabic
+      fonts:
+        - asset: assets/fonts/DTHULUTH.TTF
 
 
   # For details regarding adding assets from package dependencies, see
