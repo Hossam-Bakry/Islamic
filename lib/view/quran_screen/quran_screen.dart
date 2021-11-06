@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:islamic/core/provider/AppProvider.dart';
 import 'package:islamic/main.dart';
 import 'package:islamic/view/quran_screen/sura_name_widget.dart';
+import 'package:provider/provider.dart';
 
 class QuranScreen extends StatelessWidget {
   @override
@@ -239,6 +241,7 @@ class QuranScreen extends StatelessWidget {
       6,
     ];
 
+    var provider = Provider.of<AppProvider>(context);
     return Container(
       alignment: Alignment.center,
       child: Column(
@@ -250,7 +253,9 @@ class QuranScreen extends StatelessWidget {
             margin: EdgeInsets.symmetric(horizontal: 5.0),
             width: double.infinity,
             height: 1.0,
-            color: MyThemeData.primaryColor,
+            color: provider.isDarkMode()
+                ? MyThemeData.accentDarkColor
+                : MyThemeData.primaryColor,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -265,7 +270,9 @@ class QuranScreen extends StatelessWidget {
               Container(
                 width: 1.0,
                 height: 35.0,
-                color: MyThemeData.primaryColor,
+                color: provider.isDarkMode()
+                    ? MyThemeData.accentDarkColor
+                    : MyThemeData.primaryColor,
               ),
               Expanded(
                 child: Text(
@@ -280,7 +287,9 @@ class QuranScreen extends StatelessWidget {
             margin: EdgeInsets.symmetric(horizontal: 5.0),
             width: double.infinity,
             height: 1.0,
-            color: MyThemeData.primaryColor,
+            color: provider.isDarkMode()
+                ? MyThemeData.accentDarkColor
+                : MyThemeData.primaryColor,
           ),
           Expanded(
             flex: 3,
@@ -294,7 +303,9 @@ class QuranScreen extends StatelessWidget {
                 margin: EdgeInsets.all(5.0),
                 width: double.infinity,
                 height: 1.0,
-                color: MyThemeData.primaryColor,
+                color: provider.isDarkMode()
+                    ? MyThemeData.accentDarkColor
+                    : MyThemeData.primaryColor,
               ),
               itemCount: suraName.length,
             ),

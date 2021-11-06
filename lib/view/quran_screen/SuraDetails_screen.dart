@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:islamic/core/provider/AppProvider.dart';
 import 'package:islamic/main.dart';
 import 'package:islamic/view/quran_screen/ayat_screen.dart';
+import 'package:provider/provider.dart';
 
 class SuraDetailsScreen extends StatefulWidget {
   static const String routeName = 'Sura Details';
@@ -15,13 +17,16 @@ class _SuraDetailsScreenState extends State<SuraDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var provider = Provider.of<AppProvider>(context);
     var arg = ModalRoute.of(context)!.settings.arguments as SuraDetailsArgs;
     if (ayat.isEmpty) readSura(arg.index);
 
     return Stack(
       children: [
         Image.asset(
-          'assets/images/mainBackground.png',
+          provider.isDarkMode()
+              ? 'assets/images/mainBackground_dark.png'
+              : 'assets/images/mainBackground.png',
           width: double.infinity,
           fit: BoxFit.fill,
         ),
@@ -36,11 +41,13 @@ class _SuraDetailsScreenState extends State<SuraDetailsScreen> {
               20.0,
               25.0,
               20.0,
-              100.0,
+              80.0,
             ),
             padding: EdgeInsets.all(3.0),
             decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.7),
+                color: provider.isDarkMode()
+                    ? MyThemeData.primaryDarkColor.withOpacity(0.6)
+                    : Colors.white.withOpacity(0.7),
                 borderRadius: BorderRadius.circular(35.0)),
             child: SingleChildScrollView(
               child: Column(
@@ -51,22 +58,29 @@ class _SuraDetailsScreenState extends State<SuraDetailsScreen> {
                     'سورة  ${arg.suraName}',
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.headline4!.copyWith(
-                          fontSize: 28.0,
+                      fontSize: 28.0,
+                          color: provider.isDarkMode()
+                              ? MyThemeData.accentDarkColor
+                              : Colors.black,
                         ),
                   ),
                   Container(
                     margin: EdgeInsets.symmetric(horizontal: 45.0),
                     width: double.infinity,
                     height: 1.0,
-                    color: MyThemeData.primaryColor,
+                    color: provider.isDarkMode()
+                        ? MyThemeData.accentDarkColor.withOpacity(0.5)
+                        : MyThemeData.primaryColor,
                   ),
                   Container(
                     child: ayat.isEmpty
                         ? Center(
-                            child: CircularProgressIndicator(
-                              color: MyThemeData.primaryColor,
+                      child: CircularProgressIndicator(
+                              color: provider.isDarkMode()
+                                  ? MyThemeData.accentDarkColor
+                                  : MyThemeData.primaryColor,
                             ),
-                          )
+                    )
                         : AyatScreen(ayat),
                   ),
                 ],
@@ -82,7 +96,6 @@ class _SuraDetailsScreenState extends State<SuraDetailsScreen> {
     String fileName = 'assets/files/${index + 1}.txt';
     String fileContent = await rootBundle.loadString(fileName);
     List verses = fileContent.split('\r\n');
-    print(verses);
     ayat = verses;
     setState(() {});
   }

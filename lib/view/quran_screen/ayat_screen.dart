@@ -1,5 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:islamic/core/provider/AppProvider.dart';
+import 'package:islamic/main.dart';
+import 'package:provider/provider.dart';
 
 class AyatScreen extends StatelessWidget {
   List ayat;
@@ -8,6 +11,7 @@ class AyatScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var provider = Provider.of<AppProvider>(context);
     return Container(
       margin: EdgeInsets.all(7),
       child: Text(
@@ -17,6 +21,9 @@ class AyatScreen extends StatelessWidget {
         style: Theme.of(context).textTheme.headline6!.copyWith(
               fontWeight: FontWeight.w600,
               fontSize: 21.0,
+              color: provider.isDarkMode()
+                  ? MyThemeData.accentDarkColor.withOpacity(0.9)
+                  : Colors.black,
             ),
       ),
     );

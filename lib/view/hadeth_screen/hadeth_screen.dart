@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:islamic/core/provider/AppProvider.dart';
 import 'package:islamic/main.dart';
 import 'package:islamic/view/hadeth_screen/hadeth_widget.dart';
+import 'package:provider/provider.dart';
 
 class HadethScreen extends StatefulWidget {
   @override
@@ -11,6 +13,7 @@ class HadethScreen extends StatefulWidget {
 class _HadethScreenState extends State<HadethScreen> {
   @override
   Widget build(BuildContext context) {
+    var provider = Provider.of<AppProvider>(context);
     loadHadeth();
     return Container(
       width: double.infinity,
@@ -24,7 +27,9 @@ class _HadethScreenState extends State<HadethScreen> {
             margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 2.0),
             width: double.infinity,
             height: 1.5,
-            color: MyThemeData.primaryColor,
+            color: provider.isDarkMode()
+                ? MyThemeData.accentDarkColor
+                : MyThemeData.primaryColor,
           ),
           Text(
             'الأحاديث',
@@ -34,25 +39,30 @@ class _HadethScreenState extends State<HadethScreen> {
             margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 2.0),
             width: double.infinity,
             height: 1.5,
-            color: MyThemeData.primaryColor,
+            color: provider.isDarkMode()
+                ? MyThemeData.accentDarkColor
+                : MyThemeData.primaryColor,
           ),
           Expanded(
             flex: 3,
             child: allHadethItem.isEmpty
                 ? Center(
-                    child: CircularProgressIndicator(
-                        color: MyThemeData.primaryColor),
-                  )
+              child: CircularProgressIndicator(
+                  color: MyThemeData.primaryColor),
+            )
                 : ListView.separated(
-                    itemBuilder: (BuildContext context, int index) =>
+              itemBuilder: (BuildContext context, int index) =>
                         HadethWidget(allHadethItem[index]),
                     separatorBuilder: (BuildContext context, int index) =>
                         Container(
-                            margin: EdgeInsets.symmetric(
-                                horizontal: 50.0, vertical: 2.0),
-                            width: double.infinity,
-                            height: 0.5,
-                            color: MyThemeData.primaryColor),
+                      margin:
+                          EdgeInsets.symmetric(horizontal: 50.0, vertical: 2.0),
+                      width: double.infinity,
+                      height: 0.5,
+                      color: provider.isDarkMode()
+                          ? MyThemeData.accentDarkColor
+                          : MyThemeData.primaryColor,
+                    ),
                     itemCount: allHadethItem.length,
                   ),
           ),
