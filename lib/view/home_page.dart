@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:islamic/core/provider/AppProvider.dart';
 import 'package:islamic/main.dart';
 import 'package:islamic/view/hadeth_screen/hadeth_screen.dart';
 import 'package:islamic/view/quran_screen/quran_screen.dart';
 import 'package:islamic/view/radio_screen/radio_screen.dart';
 import 'package:islamic/view/sebha_screen/sebha_screen.dart';
+import 'package:islamic/view/setting_screen/setting_screen.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
   static const String route = 'home page';
@@ -18,28 +22,33 @@ class _HomePageState extends State<HomePage> {
     HadethScreen(),
     SebhaScreen(),
     RadioScreen(),
+    SettingsScreen(),
   ];
   int currentIndex = 0;
 
   @override
   Widget build(BuildContext context) {
+    var provider = Provider.of<AppProvider>(context);
+
     return Stack(
       children: [
         Image.asset(
-          'assets/images/mainBackground.png',
+          provider.isDarkMode()
+              ? 'assets/images/mainBackground_dark.png'
+              : 'assets/images/mainBackground.png',
           width: double.infinity,
           fit: BoxFit.fill,
         ),
         Scaffold(
           appBar: AppBar(
             title: Text(
-              'إسلامي',
+              AppLocalizations.of(context)!.app_title,
             ),
           ),
           body: screen[currentIndex],
           bottomNavigationBar: Theme(
             data: Theme.of(context).copyWith(
-              canvasColor: MyThemeData.primaryColor,
+              canvasColor: Theme.of(context).primaryColor,
             ),
             child: ClipRRect(
               borderRadius: BorderRadius.vertical(
@@ -64,25 +73,29 @@ class _HomePageState extends State<HomePage> {
                         AssetImage('assets/images/ic_moshaf.png'),
                       ),
                     ),
-                    label: 'القرآن',
+                    label: AppLocalizations.of(context)!.quran,
                   ),
                   BottomNavigationBarItem(
                     icon: ImageIcon(
                       AssetImage('assets/images/ic_hadeth.png'),
                     ),
-                    label: 'الأحاديث',
+                    label: AppLocalizations.of(context)!.hadeth,
                   ),
                   BottomNavigationBarItem(
                     icon: ImageIcon(
                       AssetImage('assets/images/ic_sebha.png'),
                     ),
-                    label: 'التسبيح',
+                    label: AppLocalizations.of(context)!.tasbeh,
                   ),
                   BottomNavigationBarItem(
                     icon: ImageIcon(
                       AssetImage('assets/images/ic_radio.png'),
                     ),
-                    label: 'الراديو',
+                    label: AppLocalizations.of(context)!.radio,
+                  ),
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.settings),
+                    label: AppLocalizations.of(context)!.setting,
                   ),
                 ],
               ),

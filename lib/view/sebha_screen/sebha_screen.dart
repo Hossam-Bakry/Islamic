@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:islamic/core/provider/AppProvider.dart';
 import 'package:islamic/main.dart';
+import 'package:provider/provider.dart';
 
 class SebhaScreen extends StatefulWidget {
   @override
@@ -22,7 +24,7 @@ class _SebhaScreenState extends State<SebhaScreen> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-
+    var provider = Provider.of<AppProvider>(context);
     return Container(
       alignment: Alignment.center,
       child: Column(
@@ -31,7 +33,11 @@ class _SebhaScreenState extends State<SebhaScreen> {
           Stack(
             alignment: Alignment(0.2, -2.3),
             children: [
-              Image.asset('assets/images/head_seb7a.png'),
+              Image.asset(
+                provider.isDarkMode()
+                    ? 'assets/images/head_seb7a_dark.png'
+                    : 'assets/images/head_seb7a.png',
+              ),
               InkWell(
                 onTap: onClick,
                 highlightColor: Color.fromRGBO(236, 236, 236, 1.0),
@@ -40,7 +46,9 @@ class _SebhaScreenState extends State<SebhaScreen> {
                 child: Transform.rotate(
                   angle: rotate,
                   child: Image.asset(
-                    'assets/images/body_seb7a.png',
+                    provider.isDarkMode()
+                        ? 'assets/images/body_seb7a_dark.png'
+                        : 'assets/images/body_seb7a.png',
                   ),
                 ),
               ),
@@ -49,15 +57,19 @@ class _SebhaScreenState extends State<SebhaScreen> {
           const SizedBox(height: 20),
           Text(
             'عدد التسبيحات',
-            style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.w500),
+            style: Theme.of(context).textTheme.headline4!.copyWith(
+                  color: provider.isDarkMode() ? Colors.white : Colors.black,
+                ),
           ),
-          const SizedBox(height: 40),
+          const SizedBox(height: 20),
           Container(
             alignment: Alignment.center,
             width: 70.0,
             height: 80.0,
             decoration: BoxDecoration(
-              color: MyThemeData.primaryColor.withOpacity(0.6),
+              color: provider.isDarkMode()
+                  ? MyThemeData.primaryDarkColor.withOpacity(0.8)
+                  : MyThemeData.primaryColor.withOpacity(0.6),
               borderRadius: BorderRadius.circular(25.0),
             ),
             child: Text(
@@ -65,6 +77,7 @@ class _SebhaScreenState extends State<SebhaScreen> {
               style: TextStyle(
                 fontSize: 25,
                 fontWeight: FontWeight.bold,
+                color: provider.isDarkMode() ? Colors.white : Colors.black,
               ),
             ),
           ),
@@ -74,17 +87,17 @@ class _SebhaScreenState extends State<SebhaScreen> {
             width: 140.0,
             height: 50.0,
             decoration: BoxDecoration(
-              color: MyThemeData.primaryColor,
+              color: provider.isDarkMode()
+                  ? MyThemeData.accentDarkColor
+                  : MyThemeData.primaryColor,
               borderRadius: BorderRadius.circular(25.0),
             ),
             child: Text(
               azkar[currentIndex],
               textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 25,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
+              style: Theme.of(context).textTheme.headline5!.copyWith(
+                    color: provider.isDarkMode() ? Colors.black : Colors.white,
+                  ),
             ),
           ),
         ],
@@ -94,7 +107,7 @@ class _SebhaScreenState extends State<SebhaScreen> {
 
   void onClick() {
     counter++;
-    rotate++;
+    rotate--;
     setState(() {});
     if (counter == 34) {
       currentIndex++;
